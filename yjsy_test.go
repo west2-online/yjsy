@@ -37,3 +37,14 @@ func TestMain(m *testing.M) {
 	// 在所有测试结束后执行清理
 	os.Exit(code)
 }
+
+func Test_GetCourse(t *testing.T) {
+	list, err := stu.GetSemesterCourses()
+	if err != nil {
+		t.Error(err)
+	}
+
+	fmt.Println("course num:", len(list))
+
+	// 不允许输出具体课程
+}
