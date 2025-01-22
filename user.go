@@ -2,7 +2,6 @@ package yjsy
 
 import (
 	"encoding/base64"
-	"fmt"
 	"net/http"
 	"strings"
 
@@ -17,19 +16,20 @@ func (s *Student) Login() error {
 
 	// 登录验证
 	res, err := s.NewRequest().SetHeaders(map[string]string{
-		"Referer": "https://yjsy.fzu.edu.cn/",
-		"Origin":  "https://yjsy.fzu.edu.cn",
+		"Referer": constants.YJSYReferer,
+		"Origin":  constants.YJSYOrigin,
 	}).SetFormData(map[string]string{
 		"muser":  s.ID,
 		"passwd": base64.StdEncoding.EncodeToString([]byte(s.Password)),
 	}).Post(constants.LoginURL)
 
 	// 由于禁用了302，这里正常情况下会返回一个错误,没有错误就说明登陆失败了
+	// 注意，研究生登陆失败超过5次会被封半个小时
 	if err == nil {
 		return errno.LoginCheckFailedError
 	}
 
-	// 获取 Set-Cookie 头部信息
+	// 解析 Cookie
 	cookies := res.Header().Values("Set-Cookie")
 	if cookies != nil {
 		var parsedCookies []*http.Cookie
@@ -59,9 +59,7 @@ func (s *Student) Login() error {
 				})
 			}
 		}
-		fmt.Println(parsedCookies)
 		s.SetCookies(parsedCookies)
-
 	} else {
 		return errno.CookieError
 	}

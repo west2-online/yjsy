@@ -17,9 +17,13 @@ limitations under the License.
 package constants
 
 const (
-	LoginURL  = "https://yjsglxt.fzu.edu.cn/login.aspx"
+	LoginURL         = "https://yjsglxt.fzu.edu.cn/login.aspx"
+	ExamRoomQueryURL = "https://yjsglxt.fzu.edu.cn/ksgl/kscx.aspx"
+	MarksQueryURL    = "https://yjsglxt.fzu.edu.cn/cjgl/xs_cjcx.aspx"
 	CourseURL = "https://yjsglxt.fzu.edu.cn/xqxk/kbcx_list.aspx"
 
-	YjsyReferer = "https://yjsglxt.fzu.edu.cn/xs_main.htm"
+	YJSYReferer = "https://yjsy.fzu.edu.cn/"
+	YJSYOrigin  = "https://yjsy.fzu.edu.cn"
+	YjsyCourseReferer = "https://yjsglxt.fzu.edu.cn/xs_main.htm"
 	YjsyPrefix  = "https://yjsglxt.fzu.edu.cn"
 )

@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"os"
 	"testing"
+
+	"github.com/west2-online/yjsy/utils"
 )
 
 var (
@@ -36,6 +38,27 @@ func TestMain(m *testing.M) {
 
 	// 在所有测试结束后执行清理
 	os.Exit(code)
+}
+
+func TestGetExamRoomInfo(t *testing.T) {
+	examRoom, err := stu.GetExamRoom(ExamRoomReq{
+		Term: "XNXQ='2023-2024-1'",
+	})
+	if err != nil {
+		t.Error(err)
+	}
+
+	fmt.Println(utils.PrintStruct(examRoom))
+}
+
+func Test_GetMarks(t *testing.T) {
+	_, err := stu.GetMarks()
+	if err != nil {
+		t.Error(err)
+	}
+
+	// 不允许输出成绩
+
 }
 
 func Test_GetCourse(t *testing.T) {
