@@ -60,3 +60,13 @@ func Test_GetMarks(t *testing.T) {
 	// 不允许输出成绩
 
 }
+
+func Test_GetCourse(t *testing.T) {
+	list, err := stu.GetSemesterCourses()
+	if err != nil {
+		t.Error(err)
+	}
+
+	fmt.Println("course num:", len(list))
+
+}
