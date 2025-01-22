@@ -17,5 +17,10 @@ limitations under the License.
 package constants
 
 const (
-	LoginURL = "https://yjsglxt.fzu.edu.cn/login.aspx"
+	LoginURL         = "https://yjsglxt.fzu.edu.cn/login.aspx"
+	ExamRoomQueryURL = "https://yjsglxt.fzu.edu.cn/ksgl/kscx.aspx"
+	MarksQueryURL    = "https://yjsglxt.fzu.edu.cn/cjgl/xs_cjcx.aspx"
+
+	YJSYReferer = "https://yjsy.fzu.edu.cn/"
+	YJSYOrigin  = "https://yjsy.fzu.edu.cn"
 )
