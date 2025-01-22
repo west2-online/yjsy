@@ -22,6 +22,7 @@ func (s *Student) parseSinglePage(url string) ([]Course, string, error) {
 		cells := htmlquery.Find(row, `td`)
 
 		// Parse fields
+		term := strings.TrimSpace(htmlquery.InnerText(cells[0]))
 		name := strings.TrimSpace(htmlquery.InnerText(cells[2]))
 		teacher := strings.TrimSpace(htmlquery.InnerText(cells[5]))
 		rawScheduleHTML := htmlquery.OutputHTML(cells[6], false) // Extract full HTML for schedule rules to recognize multiple lessons in one week
@@ -45,6 +46,7 @@ func (s *Student) parseSinglePage(url string) ([]Course, string, error) {
 			LessonPlan:       lessonPlan,
 			RawScheduleRules: rawScheduleHTML,
 			RawAdjust:        "",
+			Term:             term,
 		})
 	}
 

@@ -73,6 +73,7 @@ type Course struct {
 	RawExamTime      string               `json:"rawExamTime"`      // 考试时间地点（原始文本）
 	RawAdjust        string               `json:"rawAdjust"`        // 调课信息（原始文本）
 	Remark           string               `json:"remark"`           // 备注
+	Term             string               `json:"term"`             //学年学期
 }
 
 type CourseScheduleRule struct {
