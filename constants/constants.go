@@ -22,7 +22,6 @@ const (
 	MarksQueryURL    = "https://yjsglxt.fzu.edu.cn/cjgl/xs_cjcx.aspx"
 	CourseURL        = "https://yjsglxt.fzu.edu.cn/xqxk/kbcx_list.aspx"
 
-	YJSYReferer       = "https://yjsy.fzu.edu.cn/"
-	YjsyCourseReferer = "https://yjsglxt.fzu.edu.cn/xs_main.htm"
-	YjsyPrefix        = "https://yjsglxt.fzu.edu.cn"
+	YJSYReferer = "https://yjsy.fzu.edu.cn/"
+	YjsyPrefix  = "https://yjsglxt.fzu.edu.cn"
 )
