@@ -23,5 +23,6 @@ const (
 	CourseURL        = "https://yjsglxt.fzu.edu.cn/xqxk/kbcx_list.aspx"
 
 	YJSYReferer = "https://yjsy.fzu.edu.cn/"
+	YJSYOrigin  = "https://yjsy.fzu.edu.cn"
 	YjsyPrefix  = "https://yjsglxt.fzu.edu.cn"
 )
