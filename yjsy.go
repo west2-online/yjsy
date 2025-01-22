@@ -50,7 +50,7 @@ func (s *Student) NewRequest() *resty.Request {
 	return s.client.R()
 }
 
-func (s *Student) GetWithIdentifier(url string, queryParams map[string]string) (*html.Node, error) {
+func (s *Student) SetQueryParams(url string, queryParams map[string]string) (*html.Node, error) {
 	request := s.NewRequest().SetHeader("Referer", constants.YJSYReferer)
 	if queryParams != nil {
 		for key, value := range queryParams {
@@ -84,14 +84,4 @@ func (s *Student) PostWithIdentifier(url string, formData map[string]string) (*h
 	}
 
 	return htmlquery.Parse(strings.NewReader(strings.TrimSpace(string(resp.Body()))))
-}
-
-func (s *Student) GetWithFields(url string, kvs map[string]string) (*html.Node, error) {
-	resp, err := s.NewRequest().SetHeader("Referer", constants.YjsyCourseReferer).SetQueryParams(kvs).Get(url)
-	// 会话过期：会直接重定向，但我们禁用了重定向，所以会有error
-	if err != nil {
-		return nil, errno.CookieError
-	}
-
-	return htmlquery.Parse(bytes.NewReader(resp.Body()))
 }

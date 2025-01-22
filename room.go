@@ -10,7 +10,7 @@ import (
 
 func (s *Student) GetExamRoom(req ExamRoomReq) ([]*ExamRoomInfo, error) {
 
-	res, err := s.GetWithIdentifier(constants.ExamRoomQueryURL, map[string]string{
+	res, err := s.SetQueryParams(constants.ExamRoomQueryURL, map[string]string{
 		"strwhere": req.Term,
 	})
 	if err != nil {
