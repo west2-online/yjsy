@@ -11,7 +11,7 @@ import (
 func (s *Student) GetExamRoom(req ExamRoomReq) ([]*ExamRoomInfo, error) {
 
 	res, err := s.GetWithIdentifier(constants.ExamRoomQueryURL, map[string]string{
-		"strwhere": req.Term,
+		"strwhere": "XQXN='" + req.Term + "'",
 	})
 	if err != nil {
 		return nil, err
@@ -30,13 +30,20 @@ func parseExamRoom(doc *html.Node) ([]*ExamRoomInfo, error) {
 
 	for _, row := range rows {
 		columns := htmlquery.Find(row, "./td")
-
+		dateTime := strings.TrimSpace(htmlquery.InnerText(columns[4]))
+		// 如果为空，说明目前没有安排考试
+		if dateTime == "" {
+			continue
+		}
+		array := strings.Fields(dateTime)
+		date := array[0]
+		time := array[1]
 		examInfo := &ExamRoomInfo{
 			CourseName: strings.TrimSpace(htmlquery.InnerText(columns[1])),
 			Credit:     "", // 页面没有学分信息，留空
 			Teacher:    "", // 页面没有教师信息，留空
-			Date:       "", // 页面没有明确的考试日期，留空
-			Time:       strings.TrimSpace(htmlquery.InnerText(columns[4])),
+			Date:       date,
+			Time:       time,
 			Location:   strings.TrimSpace(htmlquery.InnerText(columns[5])),
 		}
 
