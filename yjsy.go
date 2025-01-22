@@ -1,6 +1,7 @@
 package yjsy
 
 import (
+	"bytes"
 	"crypto/tls"
 	"github.com/antchfx/htmlquery"
 	"github.com/go-resty/resty/v2"
@@ -8,6 +9,7 @@ import (
 	"github.com/west2-online/yjsy/errno"
 	"golang.org/x/net/html"
 	"net/http"
+	"strings"
 )
 
 func NewStudent() *Student {
@@ -85,7 +87,7 @@ func (s *Student) PostWithIdentifier(url string, formData map[string]string) (*h
 }
 
 func (s *Student) GetWithFields(url string, kvs map[string]string) (*html.Node, error) {
-	resp, err := s.NewRequest().SetHeader("Referer", constants.YjsyReferer).SetQueryParams(kvs).Get(url)
+	resp, err := s.NewRequest().SetHeader("Referer", constants.YjsyCourseReferer).SetQueryParams(kvs).Get(url)
 	// todo:目前我还不确定回话过期的结果是啥
 	// 会话过期：会直接重定向，但我们禁用了重定向，所以会有error
 	if err != nil {
