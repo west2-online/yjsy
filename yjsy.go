@@ -50,12 +50,10 @@ func (s *Student) NewRequest() *resty.Request {
 	return s.client.R()
 }
 
-func (s *Student) SetQueryParams(url string, queryParams map[string]string) (*html.Node, error) {
+func (s *Student) GetWithIdentifier(url string, queryParams map[string]string) (*html.Node, error) {
 	request := s.NewRequest().SetHeader("Referer", constants.YJSYReferer)
 	if queryParams != nil {
-		for key, value := range queryParams {
-			request = request.SetQueryParam(key, value)
-		}
+		request = request.SetQueryParams(queryParams)
 	}
 	// 会话过期：会直接重定向，但我们禁用了重定向，所以会有error
 	resp, err := request.Get(url)

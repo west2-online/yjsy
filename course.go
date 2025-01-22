@@ -8,7 +8,7 @@ import (
 )
 
 func (s *Student) parseSinglePage(url string) ([]*Course, string, error) {
-	resp, err := s.SetQueryParams(url, map[string]string{})
+	resp, err := s.GetWithIdentifier(url, map[string]string{})
 	if err != nil {
 		return nil, "", err
 	}

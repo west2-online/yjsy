@@ -8,7 +8,7 @@ import (
 )
 
 func (s *Student) GetMarks() (resp []*Mark, err error) {
-	res, err := s.SetQueryParams(constants.MarksQueryURL, nil)
+	res, err := s.GetWithIdentifier(constants.MarksQueryURL, nil)
 	if err != nil {
 		return nil, err
 	}
