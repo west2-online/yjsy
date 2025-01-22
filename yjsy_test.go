@@ -69,5 +69,4 @@ func Test_GetCourse(t *testing.T) {
 
 	fmt.Println("course num:", len(list))
 
-	fmt.Println(utils.PrintStruct(list))
 }

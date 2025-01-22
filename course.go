@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-func (s *Student) parseSinglePage(url string) ([]Course, string, error) {
+func (s *Student) parseSinglePage(url string) ([]*Course, string, error) {
 	resp, err := s.GetWithFields(url, map[string]string{})
 	if err != nil {
 		return nil, "", err
@@ -16,7 +16,7 @@ func (s *Student) parseSinglePage(url string) ([]Course, string, error) {
 	// Locate the rows in the course table
 	rows := htmlquery.Find(resp, `//div[@id='divContent']//table//tr[position()>1]`)
 
-	var courses []Course
+	courses := make([]*Course, 0)
 
 	for _, row := range rows {
 		cells := htmlquery.Find(row, `td`)
@@ -38,7 +38,7 @@ func (s *Student) parseSinglePage(url string) ([]Course, string, error) {
 		scheduleRules := parseScheduleRulesFromHTML(rawScheduleHTML)
 
 		// Append to the result
-		courses = append(courses, Course{
+		courses = append(courses, &Course{
 			Name:             name,
 			Teacher:          teacher,
 			ScheduleRules:    scheduleRules,
@@ -113,9 +113,8 @@ func parseScheduleRules(rawScheduleRules string) []CourseScheduleRule {
 	return rules
 }
 
-func (s *Student) GetSemesterCourses() ([]Course, error) {
-	var allCourses []Course
-
+func (s *Student) GetSemesterCourses() ([]*Course, error) {
+	allCourses := make([]*Course, 0)
 	// 递归解析当前页数据
 	currentURL := constants.CourseURL
 	for {
