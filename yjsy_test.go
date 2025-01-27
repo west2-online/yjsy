@@ -61,12 +61,26 @@ func Test_GetMarks(t *testing.T) {
 
 }
 
+func Test_GetTerms(t *testing.T) {
+	terms, err := stu.GetTerms()
+	if err != nil {
+		t.Error(err)
+	}
+
+	fmt.Println("term :", terms.Terms)
+
+}
+
 func Test_GetCourse(t *testing.T) {
-	list, err := stu.GetSemesterCourses()
+	terms, err := stu.GetTerms()
+	if err != nil {
+		t.Error(err)
+	}
+
+	list, err := stu.GetSemesterCourses(terms.Terms[0])
 	if err != nil {
 		t.Error(err)
 	}
 
 	fmt.Println("course num:", len(list))
-
 }
