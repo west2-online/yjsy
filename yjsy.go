@@ -3,14 +3,13 @@ package yjsy
 import (
 	"bytes"
 	"crypto/tls"
-	"net/http"
-	"strings"
-
 	"github.com/antchfx/htmlquery"
 	"github.com/go-resty/resty/v2"
 	"github.com/west2-online/yjsy/constants"
 	"github.com/west2-online/yjsy/errno"
 	"golang.org/x/net/html"
+	"net/http"
+	"strings"
 )
 
 func NewStudent() *Student {
@@ -54,9 +53,7 @@ func (s *Student) NewRequest() *resty.Request {
 func (s *Student) GetWithIdentifier(url string, queryParams map[string]string) (*html.Node, error) {
 	request := s.NewRequest().SetHeader("Referer", constants.YJSYReferer)
 	if queryParams != nil {
-		for key, value := range queryParams {
-			request = request.SetQueryParam(key, value)
-		}
+		request = request.SetQueryParams(queryParams)
 	}
 	// 会话过期：会直接重定向，但我们禁用了重定向，所以会有error
 	resp, err := request.Get(url)
