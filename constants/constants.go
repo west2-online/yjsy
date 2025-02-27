@@ -21,6 +21,7 @@ const (
 	ExamRoomQueryURL = "https://yjsglxt.fzu.edu.cn/ksgl/kscx.aspx"
 	MarksQueryURL    = "https://yjsglxt.fzu.edu.cn/cjgl/xs_cjcx.aspx"
 	CourseURL        = "https://yjsglxt.fzu.edu.cn/xqxk/kbcx_list.aspx"
+	TermUrl          = "https://yjsglxt.fzu.edu.cn/xjgl/xs_zcgl.aspx"
 
 	YJSYReferer = "https://yjsy.fzu.edu.cn/"
 	YJSYOrigin  = "https://yjsy.fzu.edu.cn"
