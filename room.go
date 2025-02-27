@@ -30,14 +30,15 @@ func parseExamRoom(doc *html.Node) ([]*ExamRoomInfo, error) {
 
 	for _, row := range rows {
 		columns := htmlquery.Find(row, "./td")
-		dateTime := strings.TrimSpace(htmlquery.InnerText(columns[4]))
-		// 如果为空，说明目前没有安排考试
-		if dateTime == "" {
+
+		dateTime := strings.Fields(htmlquery.InnerText(columns[4]))
+		if len(dateTime) == 0 {
 			continue
 		}
-		array := strings.Fields(dateTime)
-		date := array[0]
-		time := array[1]
+		// 如果为空，说明目前没有安排考试
+
+		date := strings.Replace(dateTime[0], "/", "-", 2)
+		time := dateTime[1]
 		examInfo := &ExamRoomInfo{
 			CourseName: strings.TrimSpace(htmlquery.InnerText(columns[1])),
 			Credit:     "", // 页面没有学分信息，留空
