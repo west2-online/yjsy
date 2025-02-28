@@ -72,3 +72,16 @@ func (s *Student) Login() error {
 func (s *Student) GetCookies() ([]*http.Cookie, error) {
 	return s.client.Cookies, nil
 }
+
+// CheckSession returns not nil if SessionExpired or AccountConflict
+func (s *Student) CheckSession() error {
+
+	// 进行一次成绩查询根据是否正常返回来判断是否过期
+	// 如果会话过期，GetWithIdentifier 会直接返回 cookie error
+	_, err := s.GetWithIdentifier(constants.MarksQueryURL, nil)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

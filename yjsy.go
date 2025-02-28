@@ -3,13 +3,14 @@ package yjsy
 import (
 	"bytes"
 	"crypto/tls"
+	"net/http"
+	"strings"
+
 	"github.com/antchfx/htmlquery"
 	"github.com/go-resty/resty/v2"
 	"github.com/west2-online/yjsy/constants"
 	"github.com/west2-online/yjsy/errno"
 	"golang.org/x/net/html"
-	"net/http"
-	"strings"
 )
 
 func NewStudent() *Student {
@@ -64,7 +65,6 @@ func (s *Student) GetWithIdentifier(url string, queryParams map[string]string) (
 	if strings.Contains(string(resp.Body()), "重新登录") {
 		return nil, errno.CookieError
 	}
-
 	return htmlquery.Parse(bytes.NewReader(resp.Body()))
 }
 
