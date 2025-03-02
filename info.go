@@ -6,13 +6,12 @@ import (
 )
 
 // GetStudentInfo 请求学生信息页面并解析为 HTML 文档后提取学生信息
-func (s *Student) GetStudentInfo() (map[string]string, error) {
+func (s *Student) GetStudentInfo() (*StudentDetail, error) {
 	resp, err := s.GetWithIdentifier(constants.UserInfoURL, nil)
 	if err != nil {
-		return nil, err
+		return &StudentDetail{}, err
 	}
 
-	// 解析学生信息
 	// 以下 xpath 表达式请根据实际响应 HTML 结构调整
 	xpaths := map[string]string{
 		"stu_id":   "//*[@id='xxTable']/table/tbody/tr[1]/td[2]",
@@ -24,9 +23,25 @@ func (s *Student) GetStudentInfo() (map[string]string, error) {
 		"major":    "//*[@id='xxTable']/table/tbody/tr[15]/td[4]",
 	}
 
-	result := make(map[string]string)
+	result := StudentDetail{}
 	for key, xp := range xpaths {
-		result[key] = safeExtractHTMLFirst(resp, xp)
+		value := safeExtractHTMLFirst(resp, xp)
+		switch key {
+		case "stu_id":
+			result.StuID = value
+		case "name":
+			result.Name = value
+		case "birthday":
+			result.Birthday = value
+		case "sex":
+			result.Sex = value
+		case "college":
+			result.College = value
+		case "grade":
+			result.Grade = value
+		case "major":
+			result.Major = value
+		}
 	}
-	return result, nil
+	return &result, nil
 }

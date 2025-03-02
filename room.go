@@ -1,6 +1,7 @@
 package yjsy
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/antchfx/htmlquery"
@@ -13,7 +14,7 @@ func (s *Student) GetExamRoom(req ExamRoomReq) ([]*ExamRoomInfo, error) {
 
 	res, err := s.GetWithIdentifier(constants.ExamRoomQueryURL, map[string]string{
 		// 非常抽象的格式,小心踩坑
-		"strwhere": req.Term,
+		"strwhere": fmt.Sprintf("XNXQ='%s'", req.Term),
 	})
 
 	if err != nil {

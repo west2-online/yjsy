@@ -34,20 +34,13 @@ type Student struct {
 
 // 学生信息详情
 type StudentDetail struct {
-	Sex              string `json:"sex"`               // 性别
-	Birthday         string `json:"birthday"`          // 出生日期
-	Phone            string `json:"phont"`             // 手机号
-	Email            string `json:"email"`             // 邮箱
-	College          string `json:"college"`           // 学院
-	Grade            string `json:"grade"`             // 年级
-	StatusChanges    string `json:"status_change"`     // 学籍异动与奖励
-	Major            string `json:"major"`             // 专业
-	Counselor        string `json:"counselor"`         // 辅导员
-	ExamineeCategory string `json:"examinee_category"` // 考生类别
-	Nationality      string `json:"nationality"`       // 民族
-	Country          string `json:"country"`           // 国别
-	PoliticalStatus  string `json:"political_status"`  // 政治面貌
-	Source           string `json:"source"`            // 生源地
+	StuID    string `json:"stu_id"`
+	Name     string `json:"name"`
+	Birthday string `json:"birthday"`
+	Sex      string `json:"sex"`
+	College  string `json:"college"`
+	Grade    string `json:"grade"`
+	Major    string `json:"major"`
 }
 
 // 学期信息
