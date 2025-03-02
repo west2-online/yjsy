@@ -28,6 +28,7 @@ var (
 	// User
 	AccountConflictError  = NewErrNo(AuthorizationFailedErrCode, "account conflict")
 	CookieError           = NewErrNo(AuthorizationFailedErrCode, "session expired")
+	SystemError           = NewErrNo(AuthorizationFailedErrCode, "system error")
 	LoginCheckFailedError = NewErrNo(AuthorizationFailedErrCode, "login check failed")
 
 	// HTTP
