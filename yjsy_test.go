@@ -84,3 +84,13 @@ func Test_GetCourse(t *testing.T) {
 
 	fmt.Println("course num:", len(list))
 }
+
+func Test_GetStudentInfo(t *testing.T) {
+    doc, err := stu.GetStudentInfo()
+    if err != nil {
+        t.Fatalf("GetStudentInfo 失败: %v", err)
+    }
+    if doc == nil {
+        t.Fatalf("GetStudentInfo 返回了空文档")
+    }
+}
