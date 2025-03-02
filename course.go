@@ -63,7 +63,9 @@ func (s *Student) parseSinglePageByXNXQ(url string, term string) ([]*Course, str
 
 	for _, row := range rows {
 		cells := htmlquery.Find(row, `td`)
-
+		if len(cells) < 8 {
+			continue
+		}
 		// Parse fields
 		term := strings.TrimSpace(htmlquery.InnerText(cells[0]))
 		name := strings.TrimSpace(htmlquery.InnerText(cells[2]))
