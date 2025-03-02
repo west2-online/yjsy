@@ -9,7 +9,7 @@ import (
 )
 
 func (s *Student) GetTerms() (*Term, error) {
-	resp, err := s.GetWithIdentifier(constants.TermUrl, map[string]string{})
+	resp, err := s.GetWithIdentifier(constants.TermURL, map[string]string{})
 	if err != nil {
 		return nil, err
 	}
