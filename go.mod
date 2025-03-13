@@ -4,12 +4,12 @@ go 1.23.4
 
 require (
 	github.com/go-resty/resty/v2 v2.16.4
-	golang.org/x/text v0.21.0
+	golang.org/x/text v0.22.0
 )
 
 require (
 	github.com/antchfx/htmlquery v1.3.4
-	golang.org/x/net v0.33.0
+	golang.org/x/net v0.36.0
 )
 
 require (
