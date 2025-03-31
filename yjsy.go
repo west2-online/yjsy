@@ -64,7 +64,7 @@ func (s *Student) GetWithIdentifier(url string, queryParams map[string]string) (
 
 	// 原文是一个Alert：您没有权限进入本页或当前登录用户已过期！\n请重新登录或与管理员联系！
 	if strings.Contains(string(resp.Body()), "当前登录用户已过期") {
-		return nil, errno.CookieError.WithMessage("当前登录用户已过期")
+		return nil, errno.CookieError
 	}
 
 	// 系统发生错误，原文是一个页面，包含以下文字：系统发生错误，该信息已被系统记录，请稍后重试或与管理员联系。
@@ -80,12 +80,12 @@ func (s *Student) PostWithIdentifier(url string, formData map[string]string) (*h
 
 	// 会话过期：会直接重定向，但我们禁用了重定向，所以会有error
 	if err != nil {
-		return nil, errno.CookieError.WithErr(err)
+		return nil, errno.CookieError
 	}
 
 	// id 或 cookie 缺失或者解析错误 TODO: 判断条件有点简陋
 	if strings.Contains(string(resp.Body()), "当前登录用户已过期") {
-		return nil, errno.CookieError.WithMessage("当前登录用户已过期")
+		return nil, errno.CookieError
 	}
 
 	// 系统发生错误，原文是一个页面，包含以下文字：系统发生错误，该信息已被系统记录，请稍后重试或与管理员联系。
