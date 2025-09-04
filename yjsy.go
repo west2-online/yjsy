@@ -14,12 +14,29 @@ import (
 )
 
 func NewStudent() *Student {
+	// 从环境变量加载配置
+	config := LoadConfigFromEnv()
 	// Disable HTTP/2.0
 	// Disable Redirect
-	client := resty.New().SetTransport(&http.Transport{
+	transport := &http.Transport{
 		TLSNextProto:    make(map[string]func(authority string, c *tls.Conn) http.RoundTripper),
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-	}).SetRedirectPolicy(resty.NoRedirectPolicy())
+	}
+
+	// 如果启用了代理，先获取隧道地址再设置代理
+	if config.Proxy.Enabled {
+		_, err := config.GetTunnelAddress()
+		if err == nil && config.Proxy.ProxyServer != "" {
+			proxyURL, err := config.GetProxyURL()
+			if err == nil {
+				transport.Proxy = http.ProxyURL(proxyURL)
+			}
+		}
+	}
+
+	client := resty.New().
+		SetTransport(transport).
+		SetRedirectPolicy(resty.NoRedirectPolicy())
 
 	return &Student{
 		client: client,
@@ -47,12 +64,13 @@ func (s *Student) ClearLoginData() {
 	s.cookies = []*http.Cookie{}
 	s.client.Cookies = []*http.Cookie{}
 }
+
 func (s *Student) NewRequest() *resty.Request {
 	return s.client.R()
 }
 
 func (s *Student) GetWithIdentifier(url string, queryParams map[string]string) (*html.Node, error) {
-	request := s.NewRequest().SetHeader("Referer", constants.YJSYReferer)
+	request := s.NewRequest().SetHeader("Referer", constants.YJSYReferer).SetHeader("User-Agent", constants.UserAgent)
 	if queryParams != nil {
 		request = request.SetQueryParams(queryParams)
 	}
@@ -76,7 +94,7 @@ func (s *Student) GetWithIdentifier(url string, queryParams map[string]string) (
 }
 
 func (s *Student) PostWithIdentifier(url string, formData map[string]string) (*html.Node, error) {
-	resp, err := s.NewRequest().SetHeader("Referer", constants.YJSYReferer).SetFormData(formData).Post(url)
+	resp, err := s.NewRequest().SetHeader("Referer", constants.YJSYReferer).SetHeader("User-Agent", constants.UserAgent).SetFormData(formData).Post(url)
 
 	// 会话过期：会直接重定向，但我们禁用了重定向，所以会有error
 	if err != nil {

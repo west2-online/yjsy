@@ -24,7 +24,12 @@ const (
 	TermURL          = "https://yjsglxt.fzu.edu.cn/xjgl/xs_zcgl.aspx"
 	UserInfoURL      = "https://yjsglxt.fzu.edu.cn/xsgl/xsxx_show.aspx"
 
+	UserAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/5clea37.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"
+
 	YJSYReferer = "https://yjsy.fzu.edu.cn/"
 	YJSYOrigin  = "https://yjsy.fzu.edu.cn"
 	YjsyPrefix  = "https://yjsglxt.fzu.edu.cn"
+
+	// 青果网络代理相关常量
+	QingGuoTunnelURL = "https://longterm.proxy.qg.net/query" // 青果网络隧道地址获取接口
 )

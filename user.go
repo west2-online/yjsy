@@ -16,8 +16,9 @@ func (s *Student) Login() error {
 
 	// 登录验证
 	res, err := s.NewRequest().SetHeaders(map[string]string{
-		"Referer": constants.YJSYReferer,
-		"Origin":  constants.YJSYOrigin,
+		"Referer":    constants.YJSYReferer,
+		"Origin":     constants.YJSYOrigin,
+		"User-Agent": constants.UserAgent,
 	}).SetFormData(map[string]string{
 		"muser":  s.ID,
 		"passwd": base64.StdEncoding.EncodeToString([]byte(s.Password)),
