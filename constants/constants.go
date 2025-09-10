@@ -21,7 +21,7 @@ const (
 	ExamRoomQueryURL = "https://yjsglxt.fzu.edu.cn/ksgl/kscx.aspx"
 	MarksQueryURL    = "https://yjsglxt.fzu.edu.cn/cjgl/xs_cjcx.aspx"
 	CourseURL        = "https://yjsglxt.fzu.edu.cn/xqxk/kbcx_list.aspx"
-	TermURL          = "https://yjsglxt.fzu.edu.cn/xjgl/xs_zcgl.aspx"
+	TermURL          = "https://yjsglxt.fzu.edu.cn/xqxk/kbcx_list.aspx?page=1&pageSize=1000"
 	UserInfoURL      = "https://yjsglxt.fzu.edu.cn/xsgl/xsxx_show.aspx"
 
 	UserAgent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/5clea37.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36"

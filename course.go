@@ -1,6 +1,7 @@
 package yjsy
 
 import (
+	"sort"
 	"strconv"
 	"strings"
 
@@ -20,6 +21,19 @@ func (s *Student) GetTerms() (*Term, error) {
 		term := strings.TrimSpace(htmlquery.InnerText(cells[0]))
 		terms.Terms = append(terms.Terms, term)
 	}
+	// 去重
+	termsMap := make(map[string]bool)
+	for _, term := range terms.Terms {
+		termsMap[term] = true
+	}
+	terms.Terms = make([]string, 0, len(termsMap))
+	for term := range termsMap {
+		terms.Terms = append(terms.Terms, term)
+	}
+	// 降序
+	sort.Slice(terms.Terms, func(i, j int) bool {
+		return terms.Terms[i] > terms.Terms[j]
+	})
 	return terms, nil
 }
 
