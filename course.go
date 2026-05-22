@@ -1,6 +1,7 @@
 package yjsy
 
 import (
+	"fmt"
 	"sort"
 	"strconv"
 	"strings"
@@ -16,8 +17,11 @@ func (s *Student) GetTerms() (*Term, error) {
 	}
 	rows := htmlquery.Find(resp, `//div[@id='divContent']//table//tr[position()>1]`)
 	terms := new(Term)
-	for _, row := range rows {
+	for i, row := range rows {
 		cells := htmlquery.Find(row, `td`)
+		if len(cells) == 0 {
+			return nil, fmt.Errorf("parse terms: row %d has no cells", i+1)
+		}
 		term := strings.TrimSpace(htmlquery.InnerText(cells[0]))
 		terms.Terms = append(terms.Terms, term)
 	}
@@ -75,10 +79,10 @@ func (s *Student) parseSinglePageByXNXQ(url string, term string) ([]*Course, str
 
 	courses := make([]*Course, 0)
 
-	for _, row := range rows {
+	for i, row := range rows {
 		cells := htmlquery.Find(row, `td`)
-		if len(cells) < 8 {
-			continue
+		if len(cells) < 9 {
+			return nil, "", fmt.Errorf("parse courses: row %d has %d cells, want at least 9", i+1, len(cells))
 		}
 		// Parse fields
 		term := strings.TrimSpace(htmlquery.InnerText(cells[0]))
@@ -94,7 +98,10 @@ func (s *Student) parseSinglePageByXNXQ(url string, term string) ([]*Course, str
 		}
 
 		// Parse schedule rules
-		scheduleRules := parseScheduleRulesFromHTML(rawScheduleHTML)
+		scheduleRules, err := parseScheduleRulesFromHTML(rawScheduleHTML)
+		if err != nil {
+			return nil, "", err
+		}
 
 		// Append to the result
 		courses = append(courses, &Course{
@@ -120,7 +127,7 @@ func (s *Student) parseSinglePageByXNXQ(url string, term string) ([]*Course, str
 }
 
 // Function to parse schedule rules from HTML
-func parseScheduleRulesFromHTML(rawScheduleHTML string) []CourseScheduleRule {
+func parseScheduleRulesFromHTML(rawScheduleHTML string) ([]CourseScheduleRule, error) {
 	// Replace <br> tags with newlines
 	rawScheduleHTML = strings.ReplaceAll(rawScheduleHTML, "<br>", "\n")
 	rawScheduleHTML = strings.ReplaceAll(rawScheduleHTML, "<br/>", "\n")
@@ -128,11 +135,11 @@ func parseScheduleRulesFromHTML(rawScheduleHTML string) []CourseScheduleRule {
 }
 
 // Existing parseScheduleRules function
-func parseScheduleRules(rawScheduleRules string) []CourseScheduleRule {
+func parseScheduleRules(rawScheduleRules string) ([]CourseScheduleRule, error) {
 	lines := strings.Split(rawScheduleRules, "\n")
 	var rules []CourseScheduleRule
 
-	for _, line := range lines {
+	for i, line := range lines {
 		line = strings.TrimSpace(line)
 		if line == "" {
 			continue
@@ -141,13 +148,22 @@ func parseScheduleRules(rawScheduleRules string) []CourseScheduleRule {
 		// Example: "1-8周 星期3:9-11节 东3-109"
 		parts := strings.Fields(line)
 		if len(parts) < 3 {
-			continue
+			return nil, fmt.Errorf("parse schedule rules: line %d has %d parts, want at least 3", i+1, len(parts))
 		}
 
 		// Parsing week, day, and location
 		weekInfo := strings.Split(parts[0], "-")
+		if len(weekInfo) < 2 {
+			return nil, fmt.Errorf("parse schedule rules: line %d has invalid week info %q", i+1, parts[0])
+		}
 		dayInfo := strings.Split(parts[1], ":")
+		if len(dayInfo) < 2 {
+			return nil, fmt.Errorf("parse schedule rules: line %d has invalid day info %q", i+1, parts[1])
+		}
 		classInfo := strings.Split(strings.TrimSuffix(dayInfo[1], "节"), "-")
+		if len(classInfo) < 2 {
+			return nil, fmt.Errorf("parse schedule rules: line %d has invalid class info %q", i+1, dayInfo[1])
+		}
 
 		startWeek, _ := strconv.Atoi(strings.TrimSuffix(weekInfo[0], "周"))
 		endWeek, _ := strconv.Atoi(strings.TrimSuffix(weekInfo[1], "周"))
@@ -169,7 +185,7 @@ func parseScheduleRules(rawScheduleRules string) []CourseScheduleRule {
 		})
 	}
 
-	return rules
+	return rules, nil
 }
 
 func (s *Student) parseNextPage(url string) ([]*Course, string, error) {
@@ -183,8 +199,11 @@ func (s *Student) parseNextPage(url string) ([]*Course, string, error) {
 
 	courses := make([]*Course, 0)
 
-	for _, row := range rows {
+	for i, row := range rows {
 		cells := htmlquery.Find(row, `td`)
+		if len(cells) < 9 {
+			return nil, "", fmt.Errorf("parse courses: row %d has %d cells, want at least 9", i+1, len(cells))
+		}
 
 		// Parse fields
 		term := strings.TrimSpace(htmlquery.InnerText(cells[0]))
@@ -200,7 +219,10 @@ func (s *Student) parseNextPage(url string) ([]*Course, string, error) {
 		}
 
 		// Parse schedule rules
-		scheduleRules := parseScheduleRulesFromHTML(rawScheduleHTML)
+		scheduleRules, err := parseScheduleRulesFromHTML(rawScheduleHTML)
+		if err != nil {
+			return nil, "", err
+		}
 
 		// Append to the result
 		courses = append(courses, &Course{
