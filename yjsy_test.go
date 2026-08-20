@@ -77,6 +77,10 @@ func Test_GetCourse(t *testing.T) {
 		t.Error(err)
 	}
 
+	if len(terms.Terms) == 0 {
+		t.Skip("no terms available; skipping GetCourse")
+	}
+
 	list, err := stu.GetSemesterCourses(terms.Terms[0])
 	if err != nil {
 		t.Error(err)
