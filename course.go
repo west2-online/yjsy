@@ -18,6 +18,11 @@ func (s *Student) GetTerms() (*Term, error) {
 	terms := new(Term)
 	for _, row := range rows {
 		cells := htmlquery.Find(row, `td`)
+		if htmlquery.ExistsAttr(cells[0], "colspan") {
+			// <td colspan="13" style="text-align:center;">请选择查询条件</td>
+			// 新生没有课程时，就仅显示这一行，也就对应的没有学期数据，排除之
+			continue
+		}
 		term := strings.TrimSpace(htmlquery.InnerText(cells[0]))
 		terms.Terms = append(terms.Terms, term)
 	}
