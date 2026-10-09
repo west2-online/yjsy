@@ -31,5 +31,6 @@ const (
 	YjsyPrefix  = "https://yjsglxt.fzu.edu.cn"
 
 	// 青果网络代理相关常量
-	QingGuoTunnelURL = "https://longterm.proxy.qg.net/query" // 青果网络隧道地址获取接口
+	QingGuoLongtermTunnelURL = "https://longterm.proxy.qg.net/query" // 青果网络长效隧道地址获取接口
+	QingGuoShareTunnelURL    = "https://share.proxy.qg.net/query"    // 青果网络短效隧道地址获取接口
 )
