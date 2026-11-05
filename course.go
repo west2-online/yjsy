@@ -1,6 +1,7 @@
 package yjsy
 
 import (
+	"regexp"
 	"sort"
 	"strconv"
 	"strings"
@@ -97,6 +98,7 @@ func (s *Student) parseSinglePageByXNXQ(url string, term string) ([]*Course, str
 			lessonPlan = htmlquery.SelectAttr(lessonPlanLink, "href")
 			lessonPlan = strings.Join([]string{constants.YjsyPrefix, strings.TrimPrefix(lessonPlan, "..")}, "")
 		}
+		rawExamTime := strings.TrimSpace(htmlquery.InnerText(cells[11]))
 
 		// Parse schedule rules
 		scheduleRules := parseScheduleRulesFromHTML(rawScheduleHTML)
@@ -109,6 +111,8 @@ func (s *Student) parseSinglePageByXNXQ(url string, term string) ([]*Course, str
 			Remark:           remark,
 			LessonPlan:       lessonPlan,
 			RawScheduleRules: rawScheduleHTML,
+			RawExamTime:      rawExamTime,
+			ExamTime:         parseExamTime(rawExamTime),
 			RawAdjust:        "",
 			Term:             term,
 		})
@@ -203,6 +207,7 @@ func (s *Student) parseNextPage(url string) ([]*Course, string, error) {
 			lessonPlan = htmlquery.SelectAttr(lessonPlanLink, "href")
 			lessonPlan = strings.Join([]string{constants.YjsyPrefix, strings.TrimPrefix(lessonPlan, "..")}, "")
 		}
+		rawExamTime := strings.TrimSpace(htmlquery.InnerText(cells[11]))
 
 		// Parse schedule rules
 		scheduleRules := parseScheduleRulesFromHTML(rawScheduleHTML)
@@ -215,6 +220,8 @@ func (s *Student) parseNextPage(url string) ([]*Course, string, error) {
 			Remark:           remark,
 			LessonPlan:       lessonPlan,
 			RawScheduleRules: rawScheduleHTML,
+			RawExamTime:      rawExamTime,
+			ExamTime:         parseExamTime(rawExamTime),
 			RawAdjust:        "",
 			Term:             term,
 		})
@@ -228,4 +235,24 @@ func (s *Student) parseNextPage(url string) ([]*Course, string, error) {
 
 	}
 	return courses, nextPageURL, nil
+}
+
+// examTimePattern e.g. 2023/11/18  09:00-11:00旗山校区_西3-501
+var examTimePattern = regexp.MustCompile(`^(\S+)\s+(\d{1,2}:\d{2}-\d{1,2}:\d{2})\s*(.*)$`)
+
+func parseExamTime(raw string) *ExamTime {
+	if raw == "" {
+		return nil
+	}
+
+	matches := examTimePattern.FindStringSubmatch(raw)
+	if len(matches) < 4 {
+		return nil
+	}
+
+	return &ExamTime{
+		Date:     matches[1],
+		Time:     matches[2],
+		Location: strings.TrimSpace(matches[3]),
+	}
 }
