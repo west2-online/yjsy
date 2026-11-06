@@ -1,15 +1,15 @@
 module github.com/west2-online/yjsy
 
-go 1.23.4
+go 1.25.0
 
 require (
 	github.com/go-resty/resty/v2 v2.16.4
-	golang.org/x/text v0.23.0
+	golang.org/x/text v0.37.0
 )
 
 require (
 	github.com/antchfx/htmlquery v1.3.4
-	golang.org/x/net v0.38.0
+	golang.org/x/net v0.55.0
 )
 
 require (
