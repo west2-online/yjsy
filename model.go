@@ -64,6 +64,7 @@ type Course struct {
 	ScheduleRules    []CourseScheduleRule `json:"scheduleRules"`    // 上课时间地点规则
 	RawScheduleRules string               `json:"rawScheduleRules"` // 上课时间地点（原始文本）
 	RawExamTime      string               `json:"rawExamTime"`      // 考试时间地点（原始文本）
+	ExamTime         *ExamTime            `json:"examTime"`         // 考试时间地点（解析后）
 	RawAdjust        string               `json:"rawAdjust"`        // 调课信息（原始文本）
 	Remark           string               `json:"remark"`           // 备注
 	Term             string               `json:"term"`             //学年学期
@@ -80,6 +81,13 @@ type CourseScheduleRule struct {
 	Double       bool   `json:"double"`       // 双周 (PS: 为啥不用 even)
 	Adjust       bool   `json:"adjust"`       // 调课
 	FromFullWeek bool   `json:"fromFullWeek"` // 是否来自整周课程
+}
+
+// 考试时间地点
+type ExamTime struct {
+	Date     string `json:"date"`     // 考试日期
+	Time     string `json:"time"`     // 考试时间
+	Location string `json:"location"` // 考试地点
 }
 
 type CourseAdjustRule struct {
